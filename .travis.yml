@@ -20,6 +20,7 @@ cache:
 
 addons:
   apt:
+    update: true
     packages:
       - libxmlsec1-dev
   chrome: stable
