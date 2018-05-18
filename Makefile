@@ -149,12 +149,6 @@ lint-js:
 	bin/lint --js --parseable
 	@echo ""
 
-scan-python:
-	@echo "--> Running Python vulnerability scanner"
-	$(PIP) install safety
-	bin/scan
-	@echo ""
-
 publish:
 	python setup.py sdist bdist_wheel upload
 
@@ -189,6 +183,12 @@ travis-test-cli: test-cli
 travis-test-dist:
 	SENTRY_BUILD=$(TRAVIS_COMMIT) SENTRY_LIGHT_BUILD=0 python setup.py sdist bdist_wheel
 	@ls -lh dist/
+
+scan-python:
+	@echo "--> Running Python vulnerability scanner"
+	$(PIP) install safety
+	bin/scan
+	@echo ""
 
 # Scan steps
 travis-scan-sqlite: scan-python
