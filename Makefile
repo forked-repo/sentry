@@ -7,7 +7,7 @@ ifneq "$(wildcard /usr/local/opt/openssl/lib)" ""
 	LDFLAGS += -L/usr/local/opt/openssl/lib
 endif
 
-PIP = LDFLAGS="$(LDFLAGS)" pip -q
+PIP = LDFLAGS="$(LDFLAGS)" pip
 WEBPACK = NODE_ENV=production ./node_modules/.bin/webpack
 
 test: develop lint test-js test-python test-cli
@@ -76,7 +76,7 @@ locale: build-js-po
 	cd src/sentry && sentry django compilemessages
 
 update-transifex: build-js-po
-	pip install -q transifex-client
+	$(PIP) install transifex-client
 	cd src/sentry && sentry django makemessages -i static -l en
 	./bin/merge-catalogs en
 	tx push -s
@@ -151,7 +151,7 @@ lint-js:
 
 scan-python:
 	@echo "--> Running Python vulnerability scanner"
-	python -m pip install -q safety
+	$(PIP) install safety
 	bin/scan
 	@echo ""
 
