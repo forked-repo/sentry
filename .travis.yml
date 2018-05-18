@@ -12,10 +12,10 @@ branches:
   - josh-testing
 
 cache:
-  pip: true
   yarn: true
   directories:
     - node_modules
+    - $HOME/.cache/pip/wheels
     - $HOME/google-cloud-sdk
 
 addons:
@@ -43,7 +43,7 @@ script:
   - make travis-scan-$TEST_SUITE
 
 after_success:
-  - pip install codecov
+  - pip install --no-binary ':all:' codecov
   - codecov -e TEST_SUITE
   - npm install -g @zeus-ci/cli
   - zeus upload -t "text/xml+xunit" junit.xml
@@ -81,7 +81,7 @@ matrix:
         - riak
         - redis-server
       install:
-        - pip install -e ".[dev,tests,optional]"
+        - pip install --no-binary ':all:' -e ".[dev,tests,optional]"
 
     - python: 2.7
       env: TEST_SUITE=postgres DB=postgres
@@ -90,7 +90,7 @@ matrix:
         - redis-server
         - postgresql
       install:
-        - pip install -e ".[dev,tests,optional]"
+        - pip install --no-binary ':all:' -e ".[dev,tests,optional]"
       before_script:
         - psql -c 'create database sentry;' -U postgres
 
@@ -101,7 +101,7 @@ matrix:
         - redis-server
         - postgresql
       install:
-        - pip install -e ".[dev,tests,optional]"
+        - pip install --no-binary ':all:' -e ".[dev,tests,optional]"
       before_script:
         - psql -c 'create database sentry;' -U postgres
 
@@ -112,8 +112,8 @@ matrix:
         - mysql
         - redis-server
       install:
-        - pip install -e ".[dev,tests,optional]"
-        - pip install mysqlclient
+        - pip install --no-binary ':all:' -e ".[dev,tests,optional]"
+        - pip install --no-binary ':all:' mysqlclient
       before_script:
         - mysql -u root -e 'create database sentry;'
 
@@ -124,7 +124,7 @@ matrix:
         - redis-server
         - postgresql
       install:
-        - pip install -e ".[dev,tests,optional]"
+        - pip install --no-binary ':all:' -e ".[dev,tests,optional]"
         - wget -N "http://chromedriver.storage.googleapis.com/$(curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip" -P ~/
         - unzip ~/chromedriver_linux64.zip -d ~/
         - rm ~/chromedriver_linux64.zip
@@ -140,7 +140,7 @@ matrix:
         - npm install -g "yarn@${YARN_VERSION}"
       install:
         - yarn install --pure-lockfile
-        - pip install $(cat requirements*.txt | grep -E 'click|pycodestyle')
+        - pip install --no-binary ':all:' $(cat requirements*.txt | grep -E 'click|pycodestyle')
 
     - python: 2.7
       env: TEST_SUITE=cli
@@ -148,7 +148,7 @@ matrix:
         - postgresql
         - redis-server
       install:
-        - pip install -e .
+        - pip install --no-binary ':all:' -e .
       before_script:
         - psql -c 'create database sentry;' -U postgres
 
@@ -162,7 +162,7 @@ matrix:
         - redis-server
         - postgresql
       install:
-        - pip install -e ".[dev,tests,optional]"
+        - pip install --no-binary ':all:' -e ".[dev,tests,optional]"
       before_script:
         - psql -c 'create database sentry;' -U postgres
 
@@ -174,7 +174,7 @@ matrix:
         - redis-server
         - postgresql
       install:
-        - pip install -e ".[dev,tests,optional]"
+        - pip install --no-binary ':all:' -e ".[dev,tests,optional]"
       before_script:
         - psql -c 'create database sentry;' -U postgres
 
@@ -191,7 +191,7 @@ matrix:
         - docker run -d --env SNUBA_SETTINGS=test --env CLICKHOUSE_SERVER=clickhouse-server:9000 --name snuba -p 1218:1218 --link clickhouse-server:clickhouse-server getsentry/snuba
         - docker ps -a
       install:
-        - pip install -e ".[dev,tests,optional]"
+        - pip install --no-binary ':all:' -e ".[dev,tests,optional]"
       before_script:
         - psql -c 'create database sentry;' -U postgres
 
