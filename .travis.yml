@@ -39,9 +39,9 @@ env:
 script:
   - make travis-lint-$TEST_SUITE 2>&1 > travis-lint.log &
   - make travis-scan-$TEST_SUITE 2>&1 > travis-scan.log &
-  - make travis-test-$TEST_SUITE 2>&1 > travis-test.log &
+  - make travis-test-$TEST_SUITE 2>&1
   - wait
-  - tail -n +1 travis-lint.log travis-scan.log travis-test.log
+  - tail -n +1 travis-lint.log travis-scan.log
 
 after_success:
   - pip install codecov
