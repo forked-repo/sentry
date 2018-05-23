@@ -113,12 +113,12 @@ matrix:
       install:
         - pip install -e ".[dev,tests,optional]" 2>&1 > /tmp/pip-install.log &
         - yarn install --pure-lockfile 2>&1 > /tmp/yarn-install.log &
-        - {
+        - \{
           wget -N "http://chromedriver.storage.googleapis.com/$(curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip" -P ~/;
           unzip ~/chromedriver_linux64.zip -d ~/;
           rm ~/chromedriver_linux64.zip;
           sudo install -m755 ~/chromedriver /usr/local/bin/;
-          } 2>&1 > /tmp/chromedriver-install.log &
+          \} 2>&1 > /tmp/chromedriver-install.log &
         - wait
         - tail -n +1 /tmp/pip-install.log /tmp/yarn-install.log /tmp/chromedriver-install.log
       before_script:
