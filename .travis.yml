@@ -37,8 +37,8 @@ env:
     - YARN_VERSION="1.3.2"
 
 script:
-  - make travis-lint-$TEST_SUITE 2>&1 > /tmp/travis-lint.log &
-  - make travis-scan-$TEST_SUITE 2>&1 > /tmp/travis-scan.log &
+  - make travis-lint-$TEST_SUITE > /tmp/travis-lint.log 2>&1 &
+  - make travis-scan-$TEST_SUITE > /tmp/travis-scan.log 2>&1 &
   - make travis-test-$TEST_SUITE
   - wait
   - tail -n +1 /tmp/travis-lint.log /tmp/travis-scan.log
@@ -111,14 +111,14 @@ matrix:
         - nvm install "$NODE_VERSION"
         - npm install -g "yarn@${YARN_VERSION}"
       install:
-        - pip install -e ".[dev,tests,optional]" 2>&1 > /tmp/pip-install.log &
-        - yarn install --pure-lockfile 2>&1 > /tmp/yarn-install.log &
+        - pip install -e ".[dev,tests,optional]" > /tmp/pip-install.log 2>&1 &
+        - yarn install --pure-lockfile > /tmp/yarn-install.log 2>&1 &
         - (
-            wget "http://chromedriver.storage.googleapis.com/$(curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip" -P ~/;
+            wget -nv "http://chromedriver.storage.googleapis.com/$(curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip" -P ~/;
             unzip ~/chromedriver_linux64.zip -d ~/;
             rm ~/chromedriver_linux64.zip;
             sudo install -m755 ~/chromedriver /usr/local/bin/;
-          ) 2>&1 > /tmp/chromedriver-install.log &
+          ) > /tmp/chromedriver-install.log 2>&1 &
         - wait
         - tail -n +1 /tmp/pip-install.log /tmp/yarn-install.log /tmp/chromedriver-install.log
       before_script:
@@ -130,8 +130,8 @@ matrix:
         - nvm install "$NODE_VERSION"
         - npm install -g "yarn@${YARN_VERSION}"
       install:
-        - pip install $(cat requirements*.txt | grep -E 'click|pycodestyle') 2>&1 > /tmp/pip-install.log &
-        - yarn install --pure-lockfile 2>&1 > /tmp/yarn-install.log &
+        - pip install $(cat requirements*.txt | grep -E 'click|pycodestyle') > /tmp/pip-install.log 2>&1 &
+        - yarn install --pure-lockfile > /tmp/yarn-install.log 2>&1 &
         - wait
         - tail -n +1 /tmp/pip-install.log /tmp/yarn-install.log
 
