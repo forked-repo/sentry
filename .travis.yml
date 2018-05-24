@@ -39,7 +39,7 @@ env:
 script:
   - make travis-lint-$TEST_SUITE 2>&1 > /tmp/travis-lint.log &
   - make travis-scan-$TEST_SUITE 2>&1 > /tmp/travis-scan.log &
-  - make travis-test-$TEST_SUITE 2>&1
+  - make travis-test-$TEST_SUITE
   - wait
   - tail -n +1 /tmp/travis-lint.log /tmp/travis-scan.log
 
@@ -114,7 +114,7 @@ matrix:
         - pip install -e ".[dev,tests,optional]" 2>&1 > /tmp/pip-install.log &
         - yarn install --pure-lockfile 2>&1 > /tmp/yarn-install.log &
         - (
-            wget -N "http://chromedriver.storage.googleapis.com/$(curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip" -P ~/;
+            wget "http://chromedriver.storage.googleapis.com/$(curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip" -P ~/;
             unzip ~/chromedriver_linux64.zip -d ~/;
             rm ~/chromedriver_linux64.zip;
             sudo install -m755 ~/chromedriver /usr/local/bin/;
