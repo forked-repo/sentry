@@ -13,14 +13,14 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         db.delete_foreign_key(u'sentry_identityprovider', 'organization_id')
-
-    def backwards(self, orm):
-        sql = db.foreign_key_sql(
+        db.alter_column(
             u'sentry_identityprovider',
             'organization_id',
-            u'sentry_organization',
-            'id')
-        db.execute(sql)
+            self.gf('django.db.models.fields.PositiveIntegerField')(default=0),
+        )
+
+    def backwards(self, orm):
+        pass
 
     models = {
         'sentry.activity': {
