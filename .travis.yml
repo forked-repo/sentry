@@ -51,7 +51,7 @@ after_failure:
   - dmesg | tail -n 100
 
 after_script:
-  - npm install -g @zeus-ci/cli
+  - yarn global add @zeus-ci/cli
   - zeus upload
     -t "text/xml+xunit" junit.xml
     -t "text/xml+xunit" jest.junit.xml
